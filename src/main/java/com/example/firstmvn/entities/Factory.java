@@ -13,10 +13,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+
 @Entity
-@Table(name = "user")
-public class User {
-    
+@Table(name = "factory")
+public class Factory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,72 +30,71 @@ public class User {
     @NotBlank
     @Size(max = 50)
     private String name;
-    
+
+    @NotBlank
     @Size(max = 50)
-    @Column(name = "pwdHash")
-    private String pwdHash;
+    @Column(unique = true)
+    private String productType;
 
     @NotBlank
     @CreationTimestamp
     private Date created;
 
 
-    public User() {
+    public Factory() {
         this.id = -1L;
         this.email = "";
         this.name = "";
-        this.pwdHash = "";
+        this.productType ="";
         this.created = new Date(System.currentTimeMillis());
     }
 
-
-    public User(String name) {
+    public Factory(String name) {
         this.id = -1L;
         this.email = "";
         this.name = name;
-        this.pwdHash = "";
+        this.productType = "";
         this.created = new Date(System.currentTimeMillis());
     }
 
 
-    public User(Long id, String name) {
+    public Factory(Long id, String name) {
         this.id = id;
         this.email = "";
         this.name = name;
-        this.pwdHash = "";
+        this.productType = "";
         this.created = new Date(System.currentTimeMillis());
     }
 
-
-    public User(Long id, String email, String name) {
+    public Factory(Long id, String email, String name) {
         this.id = id;
         this.email = email;
         this.name = name;
-        this.pwdHash = "";
+        this.productType = "";
         this.created = new Date(System.currentTimeMillis());
     }
 
 
-    public User(String email, String name) {
+    public Factory(String email, String name) {
         this.id = -1L;
         this.email = email;
         this.name = name;
-        this.pwdHash = "";
+        this.productType = "";
         this.created = new Date(System.currentTimeMillis());
     }
 
 
-    public User(
-        Long id,
-        String email,
-        String name,
-        String pwdHash,
-        Date created
+    public Factory(
+            Long id,
+            String email,
+            String name,
+            String productType,
+            Date created
     ) {
         this.id = id;
         this.email = email;
         this.name = name;
-        this.pwdHash = pwdHash;
+        this.productType = productType;
         this.created = created;
     }
 
@@ -129,13 +129,13 @@ public class User {
     }
 
 
-    public String getPwdHash() {
-        return this.pwdHash;
+    public String getProductType() {
+        return this.productType;
     }
 
 
-    public void setPwdHash(String pwdHash) {
-        this.pwdHash = pwdHash;
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
 
@@ -147,5 +147,6 @@ public class User {
     public void setCreated(Date created) {
         this.created = created;
     }
+
 
 }

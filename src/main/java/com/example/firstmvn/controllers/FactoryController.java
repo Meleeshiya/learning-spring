@@ -1,9 +1,7 @@
 package com.example.firstmvn.controllers;
 
-import com.example.firstmvn.entities.User;
-import com.example.firstmvn.services.UserService;
-
-import java.util.List;
+import com.example.firstmvn.entities.Factory;
+import com.example.firstmvn.services.FactoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,52 +16,61 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/api/factories")
+public class FactoryController {
 
     @Autowired
-    private final UserService userService;
+    private final FactoryService factoryService;
 
     public static final String SUCCESSFUL_POST_MSG = "Thanks For Posting!!";
     public static final String SUCCESSFUL_UPDATE_MSG = "Thanks for Updating!!";
     public static final String SUCCESSFUL_DELETE_MSG = "Thanks for Deleting!!";
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public FactoryController(FactoryService factoryService) {
+        this.factoryService = factoryService;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public ResponseEntity<Object> getAll() {
-        List<User> users = userService.getAll();
+        List<Factory> factories =  factoryService.getAll();
         // pick up here wrap in object
-        return new ResponseEntity<Object>(users, HttpStatus.OK);
+        return new ResponseEntity<Object>(factories, HttpStatus.OK);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Object> getOne(@PathVariable Long id) {
-        User user = userService.getOne(id);
-        return new ResponseEntity<Object>(user, HttpStatus.OK);
+        Factory factory = factoryService.getOne(id);
+        return new ResponseEntity<Object>(factory, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     @ResponseBody
-    public ResponseEntity<String> addOne(@RequestBody User user) {
-        userService.addOne(user);
+    public ResponseEntity<String> addOne(@RequestBody Factory factory) {
+        factoryService.addOne(factory);
         return new ResponseEntity<String>(SUCCESSFUL_POST_MSG, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     @ResponseBody
-    public ResponseEntity<String> updateOne(@RequestBody User user) {
-        userService.updateOne(user);
+    public ResponseEntity<String> updateOne(@RequestBody Factory factory) {
+        factoryService.updateOne(factory);
         return new ResponseEntity<String>(SUCCESSFUL_UPDATE_MSG, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteById/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteOne(@PathVariable Long id) {
-        userService.deleteOne(id);
+        factoryService.deleteOne(id);
         return new ResponseEntity<String>(SUCCESSFUL_DELETE_MSG, HttpStatus.OK);
     }
+
+//    @PutMapping("")
+//    @ResponseBody
+//    public ResponseEntity<String> updateOneIfProductChanged(@RequestBody Factory factory) {
+//        factoryService.updateOneIfProductChanged(factory);
+//        return new ResponseEntity<String>(SUCCESSFUL_UPDATE_MSG, HttpStatus.OK);
+//    }
 }

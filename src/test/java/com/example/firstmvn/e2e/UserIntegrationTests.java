@@ -1,10 +1,3 @@
-/**
- * Integration tests for user routes.
- * Example: https://spring.io/guides/gs/testing-web/
- * 
- * created by Sean Maxwell, 1/20/2022
- */
-
 package com.example.firstmvn.e2e;
 
 import java.util.ArrayList;
@@ -59,10 +52,10 @@ public class UserIntegrationTests {
     private User savedUser;
     private User unsavedUser;
 
-	
+
     /**
      * Constructor()
-     * 
+     *
      * @param userRepo
      */
     @Autowired

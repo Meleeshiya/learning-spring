@@ -1,9 +1,3 @@
-/**
- * Handle db requests for users.
- * 
- * created by Sean Maxwell, 1/15/2022
- */
-
 package com.example.firstmvn.daos;
 
 import com.example.firstmvn.entities.User;
@@ -16,6 +10,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
@@ -29,35 +24,17 @@ public class UserDao {
     private static final String EMAIL_TAKEN_MSG_1 = "The email \"";
     private static final String EMAIL_TAKEN_MSG_2 = "\" has already been taken by another user.";
 
+    @Autowired
     private final UserRepo userRepo;
 
-
-    /**
-     * Constructor()
-     * 
-     * @param userRepo
-     */
     public UserDao(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
-    
 
-    /**
-     * Find a user by id.
-     * 
-     * @return
-     */
     public List<User> getAll() {
         return userRepo.findAll();
     }
 
-
-    /**
-     * Find one user by id.
-     * 
-     * @param id
-     * @return
-     */
     public User getOne(Long id) {
         Optional<User> resp = userRepo.findById(id);
         return resp.orElseThrow(() -> {
@@ -66,28 +43,16 @@ public class UserDao {
         });
     }
 
-
-    /**
-     * Add one user.
-     * 
-     * @param user
-     */
     public void addOne(User user) {
         User resp = userRepo.findByIdOrEmail(user.getId(), user.getEmail());
         if (resp != null) {
             String msg = UserDao.getAlreadyPersistsMsg(user.getId(), user.getEmail());
             throw new EntityExistsException(msg);
-        };
+        }
         // Do db query
         userRepo.save(user);
     }
 
-
-    /**
-     * Update one user by id.
-     * 
-     * @param user
-     */
     public void updateOne(User user) {
         // Check id not found
         Optional<User> resp = userRepo.findById(user.getId());
@@ -105,12 +70,6 @@ public class UserDao {
         userRepo.updateOne(user.getId(), user.getEmail(), user.getName(), user.getPwdHash());
     }
 
-
-    /**
-     * Delete one user by id.
-     * 
-     * @param id
-     */
     public void deleteOne(Long id) {
         // Check id not found
         Optional<User> resp =userRepo.findById(id);
@@ -122,37 +81,14 @@ public class UserDao {
         userRepo.deleteById(id);
     }
 
-
-    /*****************************************************************************************
-     *                                       Helpers
-     ****************************************************************************************/
-    
-    /**
-     * Get message for id not found.
-     * 
-     * @return
-     */
     public static String getIdNotFoundMsg(Long id) {
         return ID_NOT_FOUND_MSG_1 + id + ID_NOT_FOUND_MSG_2;
     }
 
-
-    /**
-     * Get message for taken id or email
-     * 
-     * @return
-     */
     public static String getAlreadyPersistsMsg(Long id, String email) {
         return ADD_ERR_MSG + " [id: " + id + ", email: " + email + "]";
     }
 
-
-    /**
-     * Get message for email already taken.
-     * 
-     * @param email
-     * @return
-     */
     public static String getEmailAlreadyTakenMsg(String email) {
         return EMAIL_TAKEN_MSG_1 + email + EMAIL_TAKEN_MSG_2;
     }

@@ -1,9 +1,3 @@
-/**
- * Check that the context loads the controllers
- * 
- * created by Sean Maxwell, 1/16/2021
- */
-
 package com.example.firstmvn;
 
 import org.junit.jupiter.api.Test;
